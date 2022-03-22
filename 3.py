@@ -2,7 +2,6 @@ import xlrd
 from statistics import fmean, stdev
 
 
-
 #  ================== 1 ==================
 infile = "datensaetze.xlsx"
 
