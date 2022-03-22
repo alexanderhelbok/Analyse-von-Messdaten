@@ -69,3 +69,16 @@ for i in range(7, 20):
     N7 += poisson(mean, i)*365
 
 print('N(0) = {}, N(7+) = {}'.format(round(N0, 0), round(N7, 0)))
+
+# =========== 4 ==========
+mean1 = 2950
+std1 = mean1**0.5
+mean2 = 2660
+std2 = mean2**0.5
+
+Diff = mean1 - mean2
+Err = (std1**2 + std2**2)**0.5
+
+print('{} + {}'.format(mean1, std1))
+print('{} + {}'.format(mean2, std2))
+print('{} + {}'.format(Diff, Err))
