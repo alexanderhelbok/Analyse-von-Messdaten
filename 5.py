@@ -1,12 +1,11 @@
 import xlrd
 import matplotlib.pyplot as plt
-from numpy import exp
 import numpy as np
 from statistics import fmean, stdev
 
 
 def poisson(mean, x):
-    sum = exp(-mean)*mean**x/np.math.factorial(x)
+    sum = np.exp(-mean)*mean**x/np.math.factorial(x)
     return sum
 
 
@@ -35,8 +34,8 @@ for i in range(0, 60):
     Poisson2.append(poisson(mean2, i)*100)
     Time.append(i)
 
-print(Data1)
-print(Data2)
+# print(Data1)
+# print(Data2)
 
 fig, (ax1, ax2) = plt.subplots(1, 2)
 ax1.hist(Data1, density=False, bins=60)  # density=False would make counts
@@ -72,7 +71,7 @@ for i in range(0, 10):
         p5 += poisson(mean1, i)*poisson(mean2, j)
 
 print('P(0:0) = {}, P(3:1) = {}'.format(p1, p2))
-print('P(Heim) = {}, P(Unentschieden) = {}, P(Aus) = {}'.format(round(p4, 3), round(p3, 3), round(p5, 3)))
+print('P(Heim) = {}, P(Unentschieden) = {}, P(Aus) = {}\n'.format(round(p4, 3), round(p3, 3), round(p5, 3)))
 
 # ========== 3 =============
 mean = 2
@@ -82,7 +81,7 @@ N7 = 0
 for i in range(7, 20):
     N7 += poisson(mean, i)*365
 
-print('N(0) = {}, N(7+) = {}'.format(round(N0, 0), round(N7, 0)))
+print('N(0) = {}, N(7+) = {}\n'.format(round(N0, 0), round(N7, 0)))
 
 # =========== 4 ==========
 mean1 = 2950
@@ -93,6 +92,6 @@ std2 = mean2**0.5
 Diff = mean1 - mean2
 Err = (std1**2 + std2**2)**0.5
 
-print('{} + {}'.format(mean1, std1))
-print('{} + {}'.format(mean2, std2))
-print('{} + {}'.format(Diff, Err))
+print('{} +- {}'.format(mean1, std1))
+print('{} +- {}'.format(mean2, std2))
+print('{} +- {}'.format(Diff, Err))
