@@ -17,7 +17,7 @@ def g1(i, x):
     return l[i-1]
 
 
-for i in range(1, 5):
+for i in range(1, 6):
     Yi = g1(i, a)
     yi = d1(i, g1, a) * err
     print('{}) y\u0305 = {}, \u03B1 = \u00B1{}'.format(i, round(Yi, 4), round(abs(yi), 4)))
@@ -44,7 +44,7 @@ def d2(i, f, x):
     return result
 
 
-for i in range(1, 5):
+for i in range(1, 6):
     Yi = g2(i, a, b, c)
     yi = ((d2(i, g2, 'x') * aerr)**2 + (d2(i, g2, 'y') * berr)**2 + (d2(i, g2, 'z') * cerr)**2)**0.5
     yirel = yi/Yi
@@ -71,6 +71,6 @@ def d3(f, x):
 Yi = g3(alpha, beta)
 yi = ((d3(g3, 'x') * aerr)**2 + (d3(g3, 'y') * berr)**2)**0.5
 yirel = yi/Yi
-print('{}) y\u0305 = {}, \u03B1 = \u00B1{}, \u03B1rel = \u00B1{}'.format(i, round(Yi, 4), round(abs(yi), 4), round(abs(yirel), 4)))
+print('y\u0305 = {}, \u03B1 = \u00B1{}, \u03B1rel = \u00B1{}'.format(round(Yi, 4), round(abs(yi), 4), round(abs(yirel), 4)))
 print("\n")
 # ================ 4 =================
