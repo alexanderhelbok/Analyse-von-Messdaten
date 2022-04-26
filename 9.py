@@ -36,17 +36,17 @@ def f3(a):
 
 chi = [0, 0, 0]
 for i in range(0, len(x)):
-    chi[0] += ((y[i] - f1(x[i]))/alpha[i])**2
+    chi[0] += ((y[i] - f1(x[i])) / alpha[i])**2
     chi[1] += ((y[i] - f2(x[i])) / alpha[i])**2
     chi[2] += ((y[i] - f3(x[i])) / alpha[i])**2
     # print(((y[i] - f1(x[i]))/alpha[i])**2)
 
-# plt.errorbar(x, y, yerr=alpha, fmt='.k', capsize=3, label='Data')
-# plt.plot(x, f1(x), label='f1(x)')
-# plt.plot(x, f2(x), label='f2(x)')
-# plt.plot(x, f3(x), label='f3(x)')
-# plt.legend()
-# plt.show()
+plt.errorbar(x, y, yerr=alpha, fmt='.k', capsize=3, label='Data')
+plt.plot(x, f1(x), label='f1(x)')
+plt.plot(x, f2(x), label='f2(x)')
+plt.plot(x, f3(x), label='f3(x)')
+plt.legend()
+plt.show()
 
 print(chi)
 # =========== 3 ===========
@@ -85,8 +85,10 @@ for j in np.linspace(0.9, 1.13, 25):
     new2.append(s)
 
 
-print(new1, new2)
+# print(new1, new2)
 fig, axs = plt.subplots(2)
-axs[0].plot(np.linspace(8, 11, 25), new1)
-axs[1].plot(np.linspace(0.9, 1.13, 25), new2)
+axs[0].plot(np.linspace(0.9, 1.13, 25), new2, label='X(a,b\u0305)')
+axs[1].plot(np.linspace(8, 11, 25), new1, label='X(a\u0305,b)')
+axs[0].legend()
+axs[1].legend()
 plt.show()
