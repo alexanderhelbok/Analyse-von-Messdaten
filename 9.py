@@ -39,7 +39,8 @@ for i in range(0, len(x)):
     chi[0] += ((y[i] - f1(x[i])) / alpha[i])**2
     chi[1] += ((y[i] - f2(x[i])) / alpha[i])**2
     chi[2] += ((y[i] - f3(x[i])) / alpha[i])**2
-    # print(((y[i] - f1(x[i]))/alpha[i])**2)
+
+print(chi)
 
 plt.errorbar(x, y, yerr=alpha, fmt='.k', capsize=3, label='Data')
 plt.plot(x, f1(x), label='f1(x)')
@@ -47,8 +48,6 @@ plt.plot(x, f2(x), label='f2(x)')
 plt.plot(x, f3(x), label='f3(x)')
 plt.legend()
 plt.show()
-
-print(chi)
 # =========== 3 ===========
 
 sheet = wb.sheet_by_index(5)
