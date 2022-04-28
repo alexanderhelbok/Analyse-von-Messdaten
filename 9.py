@@ -2,20 +2,26 @@ import numpy as np
 import xlrd
 import matplotlib.pyplot as plt
 
+
+def chisq(obs, exp, error):
+    return np.sum((obs - exp) ** 2 / (error ** 2))
+
+
 # ========== 1 ============
 infile = "datensaetze.xlsx"
 
 wb = xlrd.open_workbook(infile)
 sheet = wb.sheet_by_index(4)
 
-y, alpha = [], []
 x = np.linspace(0, 2, 21)
 
+temp1, temp2 = [], []
 for i in range(1, sheet.nrows):
     # print(sheet.cell_value(i, 0))
-    y.append(sheet.cell_value(i, 1))
-    alpha.append(sheet.cell_value(i, 2))
+    temp1.append(sheet.cell_value(i, 1))
+    temp2.append(sheet.cell_value(i, 2))
 
+y, alpha = np.array(temp1), np.array(temp2)
 # print(x,y,alpha)
 
 
@@ -35,10 +41,9 @@ def f3(a):
 
 
 chi = [0, 0, 0]
-for i in range(0, len(x)):
-    chi[0] += ((y[i] - f1(x[i])) / alpha[i])**2
-    chi[1] += ((y[i] - f2(x[i])) / alpha[i])**2
-    chi[2] += ((y[i] - f3(x[i])) / alpha[i])**2
+chi[0] = chisq(y, f1(x), alpha)
+chi[1] = chisq(y, f2(x), alpha)
+chi[2] = chisq(y, f3(x), alpha)
 
 print(chi)
 
@@ -52,12 +57,13 @@ plt.show()
 
 sheet = wb.sheet_by_index(5)
 
-y, alpha = [], []
+temp1, temp2 = [], []
 for i in range(1, sheet.nrows):
     # print(sheet.cell_value(i, 0))
-    y.append(sheet.cell_value(i, 1))
-    alpha.append(sheet.cell_value(i, 2))
+    temp1.append(sheet.cell_value(i, 1))
+    temp2.append(sheet.cell_value(i, 2))
 x = np.linspace(0, 20, 21)
+y, alpha = np.array(temp1), np.array(temp2)
 
 
 def f4(a, b, c):
