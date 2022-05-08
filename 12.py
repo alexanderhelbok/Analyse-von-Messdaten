@@ -1,6 +1,7 @@
 import numpy as np
 import xlrd
 import matplotlib.pyplot as plt
+import seaborn as sns
 from scipy.optimize import curve_fit
 
 
@@ -34,19 +35,33 @@ def test2(x, a, b):
     return a * (x - xsp) + b
 
 
-param, param_cov = curve_fit(test1, xi, y)
+param, param_cov = curve_fit(test1, xi, y, sigma=alpha)
+
 print('a\u0305 = {}, b\u0305 = {}'.format(param[0], param[1]))
+print(np.corrcoef(xi, y))
 xsp, ysp = np.sum(xi*alpha)/np.sum(alpha), np.sum(y*alpha)/np.sum(alpha)
 print(f'xsp = {xsp}, ysp = {ysp}')
-param2, param_cov2 = curve_fit(test2, xi, y)
+param2, param_cov2 = curve_fit(test2, xi, y, sigma=alpha)
 print('A\u0305 = {}, B\u0305 = {}'.format(param2[0], param2[1]))
+print(param_cov)
+print(param_cov2)
 
 
-plt.errorbar(xi, y, yerr=alpha, fmt='.k', capsize=3, label='Data')
-plt.plot(xi, test1(xi, param[0], param[1]), '--', color='blue', label='Normal Fit')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.legend()
-plt.show()
+
+# plt.errorbar(xi, y, yerr=alpha, fmt='.k', capsize=3, label='Data')
+# plt.plot(xi, test1(xi, param[0], param[1]), '--', color='blue', label='Normal Fit')
+# plt.xlabel('x')
+# plt.ylabel('y')
+# plt.legend()
+# plt.show()
 
 # ======== 2 ===============
+print(chisq(y, test1(xi, param[0], param[1]), alpha))
+ai, bi = np.linspace(1.9, 2, 21), np.linspace(10, 11, 51)
+fun_map = np.empty((ai.size, bi.size))
+for i in range(ai.size):
+    for j in range(bi.size):
+        fun_map[i, j] = chisq(y, test1(xi, ai[i], bi[j]), alpha) - chisq(y, test1(xi, param[0], param[1]), alpha)
+
+ax = sns.heatmap(fun_map)
+plt.show()
