@@ -2,7 +2,7 @@ import numpy as np
 import xlrd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
-from IPython.display import display, Math, Latex
+# from IPython.display import display, Math, Latex
 
 
 def chisq(obs, exp, error):

@@ -5,10 +5,43 @@ import pandas as pd
 import seaborn as sns
 from scipy.optimize import curve_fit
 from matplotlib.patches import Ellipse
+import matplotlib.transforms as transforms
 
 
 def chisq(obs, exp, error):
     return np.sum((obs - exp) ** 2 / (error ** 2))
+
+
+def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
+    if x.size != y.size:
+        raise ValueError("x and y must be the same size")
+
+    cov = np.cov(x, y)
+    pearson = cov[0, 1]/np.sqrt(cov[0, 0] * cov[1, 1])
+    # Using a special case to obtain the eigenvalues of this
+    # two-dimensionl dataset.
+    ell_radius_x = np.sqrt(1 + pearson)
+    ell_radius_y = np.sqrt(1 - pearson)
+    ellipse = Ellipse((0, 0), width=ell_radius_x * 2, height=ell_radius_y * 2,
+                      facecolor=facecolor, **kwargs)
+
+    # Calculating the stdandard deviation of x from
+    # the squareroot of the variance and multiplying
+    # with the given number of standard deviations.
+    scale_x = np.sqrt(cov[0, 0]) * n_std
+    mean_x = np.mean(x)
+
+    # calculating the stdandard deviation of y ...
+    scale_y = np.sqrt(cov[1, 1]) * n_std
+    mean_y = np.mean(y)
+
+    transf = transforms.Affine2D() \
+        .rotate_deg(45) \
+        .scale(scale_x, scale_y) \
+        .translate(mean_x, mean_y)
+
+    ellipse.set_transform(transf + ax.transData)
+    return ax.add_patch(ellipse)
 
 
 # ========= 1 =========
@@ -74,11 +107,12 @@ z.index = np.round((param[0] - ai), 2)
 ax = sns.heatmap(z, vmin=0, vmax=5)
 ax.hlines([14, 24.5, 35], color='k', *ax.get_xlim())
 ax.vlines([12, 22.5, 33], color='k', *ax.get_xlim())
+# confidence_ellipse(ai, bi, ax, n_std=1, edgecolor='red')
 plt.show()
 print(z.loc[0.05])
 
 # fig, ax = plt.subplots()
-# ell = Ellipse(xy=(0, 0), width=np.sqrt(1+r), height=np.sqrt(1-r), angle=np.sqrt((1+r)/(1-r)))
+# ell = Ellipse(xy=(0, 0), width=2*np.sqrt(1+r), height=2*np.sqrt(1-r), angle=np.sqrt((1+r)/(1-r)))
 # ax.add_patch(ell)
 # ax.set_aspect('equal')
 # ax.autoscale()
