@@ -12,12 +12,6 @@ def chisq(obs, exp, error):
     return np.sum((obs - exp) ** 2 / (error ** 2))
 
 
-def rho(X, Y):
-    cov = np.cov(X, Y)
-    r = np.corrcoef(X, Y)[0, 1]
-    return 1/(1-r**2)(np.sum(X-np.mean(X))**2/cov[0, 0] + np.sum(Y-np.mean(Y))**2/cov[1, 1] + (np.sum(X-np.mean(X))*np.sum(Y-np.mean(Y)))/cov[0, 1])
-
-
 def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
     if x.size != y.size:
         raise ValueError("x and y must be the same size")
@@ -34,13 +28,11 @@ def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
     # Calculating the stdandard deviation of x from
     # the squareroot of the variance and multiplying
     # with the given number of standard deviations.
-    # scale_x = np.sqrt(cov[0, 0]) * n_std
-    scale_x = rho(x, y)*n_std
+    scale_x = np.sqrt(cov[0, 0]) * n_std
     mean_x = np.mean(x)
 
     # calculating the stdandard deviation of y ...
-    # scale_y = np.sqrt(cov[1, 1]) * n_std
-    scale_y = rho(x, y) * n_std
+    scale_y = np.sqrt(cov[1, 1]) * n_std
     mean_y = np.mean(y)
 
     transf = transforms.Affine2D() \
@@ -69,19 +61,18 @@ xi, y = np.array(temp1), np.array(temp2)
 xmean, ymean = np.mean(xi), np.mean(y)
 cov = np.cov(xi, y)
 xsig, ysig = np.sqrt(cov[0, 0]), np.sqrt(cov[1, 1])
-r = np.corrcoef(xi, y)[0, 1]
+r = cov[1, 0]/np.sqrt(cov[1, 1]*cov[0, 0])
 
 print(f'x\u0305 = {xmean}, y\u0305 = {ymean}')
 print(cov)
 print(f'x\u03C3 = {xsig}, y\u03C3 = {ysig}, r = {r}')
-print(f'P( = 1) = {0.39*xi.size}')
 
 
 fig, ax = plt.subplots()
-ax.scatter(xi, y, marker=".")
-confidence_ellipse(xi, y, ax, n_std=1, edgecolor='red', label=r'$1\,\rho$')
-confidence_ellipse(xi, y, ax, n_std=2, edgecolor='magenta', label=r'$2\,\rho$')
-confidence_ellipse(xi, y, ax, n_std=3, edgecolor='blue', linestyle="--", label=r'$3\,\rho$')
+ax.scatter(xi, y)
+confidence_ellipse(xi, y, ax, n_std=1, edgecolor='red', label=r'$1\,\sigma$')
+confidence_ellipse(xi, y, ax, n_std=2, edgecolor='red', label=r'$2\,\sigma$')
+confidence_ellipse(xi, y, ax, n_std=3, edgecolor='blue', linestyle="--", label=r'$3\,\sigma$')
 plt.legend()
 plt.show()
 
@@ -97,4 +88,4 @@ for set in range(0, 4):
         temp2.append(sheet.cell_value(i, 3+set*3))
     xi, y = np.vstack(np.array(temp1)), np.array(temp2)
 
-# print(xi)
+print(xi)
