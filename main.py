@@ -1,4 +1,9 @@
 import numpy as np
+from scipy.special import gamma
+
+
+def chid(chi, dof, p):
+    return 
 
 
 def chisq(obs, exp, error):
@@ -32,3 +37,6 @@ def test6(x, a, b, c, d, e, f):
 def test7(x, a, b, c, d, e, f, g):
     return a*x**6 + b*x**5 + c*x**4 + d*x**3 + e*x**2 + f*x + g
 
+
+def test8(x, a, b, c, d, e, f, g, h):
+    return a*x**7 + b*x**6 + c*x**5 + d*x**4 + e*x**3 + f*x**2 + g*x + h
